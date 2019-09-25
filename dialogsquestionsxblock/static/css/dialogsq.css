@@ -1,0 +1,171 @@
+
+.dialogsq_block .personaje{
+    width: 130px;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center; 
+}
+
+.dialogsq_block .Izquierda ,
+.dialogsq_block .Derecha{
+    position: relative;
+    width:800px;
+    color:#000;
+    min-height: 115px;
+    padding:20px 0;
+    margin: auto;
+    box-sizing: border-box; 
+    overflow: hidden;
+}
+
+.dialogsq_block .Izquierda .personaje{
+    left: 10px;
+    position: absolute;
+    top:0;
+    z-index:5;
+}
+
+.dialogsq_block .Derecha .personaje{
+    right: 10px;
+    position: absolute;
+    top:0;
+    z-index:5;
+}
+
+.dialogsq_block .dialogo p {
+    margin-bottom: 0 !important;
+}
+
+.dialogsq_block .Izquierda .dialogo{
+    left: 180px; 
+    display:table; 
+    max-width: 505px;
+}
+
+.dialogsq_block .Derecha .dialogo{
+    right: 180px;
+    float: right;
+    text-align: right; 
+    display:table;
+    max-width: 505px;
+}
+
+.dialogsq_block .Izquierda .dialogo,
+.dialogsq_block .Derecha .dialogo
+{
+    position: relative;
+    min-width: 200px;
+    box-sizing: border-box;
+    padding: 30px;
+    border-radius: 15px;
+    min-height: 78px;
+	display: table-cell; vertical-align: middle;
+	 width: -webkit-max-content;
+	 width: -moz-max-content;
+	 width: max-content; 
+}
+.dialogsq_block .Izquierda .cola{
+    left: 133px;
+    background-image: url(https://static.cmm.uchile.cl/global2/cola_izq.png);
+}
+
+.dialogsq_block .Derecha .cola{
+    right: 133px;
+    background-image: url(https://static.cmm.uchile.cl/global2/cola_der.png);
+}
+
+.dialogsq_block .Izquierda .cola,
+.dialogsq_block .Derecha .cola{
+    position: absolute;
+    box-sizing: border-box;
+    top:35px;
+    width: 47px;
+    height: 28px;
+    z-index: 4;
+}
+
+.dialogsq_block .Izquierda .responder{
+    position: relative;
+    padding: 0 0 10px 0;
+    top: 10px;
+    margin-left: 180px;
+}
+
+.dialogsq_block .Derecha .responder{
+    position: relative;
+    float:right;
+    padding: 0 0 10px 0;
+    top: 10px;
+    margin-right: 140px;
+}
+
+.dialogsq_block .submit {
+    height: 40px;
+    vertical-align: middle;
+    border-color: #0075b4;
+    background: #0075b4;
+    color: #fcfcfc;
+    text-shadow: none;
+    box-shadow: none;
+    border-width: 1px;
+    border-radius: 0.1875rem;
+    width: auto;
+    height: auto;
+    padding: 5px 10px;
+    font-weight: normal;
+    text-shadow: none;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+  
+.dialogsq_block .submit:hover {
+    background-color: #065683;
+ }
+
+.dialogsq_block .submit[disabled=disabled], .vof_block .action .check:disabled {
+    border-color: #d2d0d0;
+    background: #f2f3f3;
+    color: #676666;
+    cursor:auto;
+    border-style: solid;
+}
+
+.dialogsq_block .submission-feedback{
+    padding: 10px;
+    color: #5e5e5e;
+    font-size: 0.9em;
+}
+
+.dialogsq_block .notificacion{
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.dialogsq_block .notificacion img{
+    vertical-align: middle;
+}
+
+.dialogsq_block .inputdialogo{
+    width:42px;
+}
+
+.dialogsq_block .button_show_answers{
+    font-size:14px;
+    cursor: pointer;
+    color: #0066a2;
+    padding: 10px;
+    font-weight: 400;
+}
+
+.dialogsq_block .the_answer{
+    position: relative;
+    padding: 20px 20px 0px 20px;
+    font-size: 12px;
+    font-style: italic;
+    color: #5e5e5e;
+}
+
+.dialogsq_block .Derecha .the_answer{
+    float: right;
+}
