@@ -19,28 +19,38 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
 
     function updateText(result) {
         //actualizo el texto de correcto o incorrecto
-        if(result.score >= 1){
-            $element.find('.notificacion').html('');
-            $element.find('.notificacion').removeClass('incorrecto');
-            $element.find('.notificacion').addClass('correcto');
-            $element.find('.notificacion.correcto').html('<img src="'+settings.image_path+'correct-icon.png"/> ¡Respuesta Correcta!');
-        }
-        else{
-            $element.find('.notificacion').html('');
-            $element.find('.notificacion').removeClass('correcto');
-            $element.find('.notificacion').addClass('incorrecto');
-            if(result.score > 0){
-                $element.find('.notificacion.incorrecto').html('<img src="'+settings.image_path+'partial-icon.png"/> Respuesta parcialmente correcta');
+        if(result.show_correctness != 'never'){
+            if(result.score >= 1){
+                $element.find('.notificacion').html('');
+                $element.find('.notificacion').removeClass('incorrecto');
+                $element.find('.notificacion').removeClass('dontshowcorrectness');
+                $element.find('.notificacion').addClass('correcto');
+                $element.find('.notificacion.correcto').html('<img src="'+settings.image_path+'correct-icon.png"/> ¡Respuesta Correcta!');
             }
             else{
-                $element.find('.notificacion.incorrecto').html('<img src="'+settings.image_path+'incorrect-icon.png"/> Respuesta Incorrecta');
+                $element.find('.notificacion').html('');
+                $element.find('.notificacion').removeClass('correcto');
+                $element.find('.notificacion').removeClass('dontshowcorrectness');
+                $element.find('.notificacion').addClass('incorrecto');
+                if(result.score > 0){
+                    $element.find('.notificacion.incorrecto').html('<img src="'+settings.image_path+'partial-icon.png"/> Respuesta parcialmente correcta');
+                }
+                else{
+                    $element.find('.notificacion.incorrecto').html('<img src="'+settings.image_path+'incorrect-icon.png"/> Respuesta Incorrecta');
+                }
             }
+            
+            statusDiv.removeClass('correct');
+            statusDiv.removeClass('incorrect');
+            statusDiv.removeClass('unanswered');
+            statusDiv.addClass(result.indicator_class);
+        }else{
+            $element.find('.notificacion').html('');
+            $element.find('.notificacion').removeClass('correcto');
+            $element.find('.notificacion').removeClass('incorrecto');
+            $element.find('.notificacion').addClass('dontshowcorrectness');
+            $element.find('.notificacion.dontshowcorrectness').html('<span class="icon fa fa-info-circle" aria-hidden="true"></span>Respuesta enviada.');
         }
-
-        statusDiv.removeClass('correct');
-        statusDiv.removeClass('incorrect');
-        statusDiv.removeClass('unanswered');
-        statusDiv.addClass(result.indicator_class);
 
         //desactivo el boton si es que se supero el nro de intentos
         if(result.max_attempts > 0){

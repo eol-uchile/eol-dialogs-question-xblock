@@ -1,5 +1,9 @@
 <div class="dialogsq_block">
+    {% if show_correctness != 'never' %}
     <div class="{{ xblock.side }} status {{ indicator_class }}" id="status_{{ location }}">
+    {% else %}
+    <div class="{{ xblock.side }} status " id="status_{{ location }}">
+    {% endif %}
         <div class="personaje" style="background-image: url({{ xblock.image_url }});"></div>
         <div class="cola" style="background-color: {{ xblock.background_color }};"></div>
         <div class="dialogo" style="background-color: {{ xblock.background_color }}; color: {{ xblock.text_color }};">

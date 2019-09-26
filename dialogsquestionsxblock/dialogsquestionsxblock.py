@@ -166,6 +166,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             'xblock': self,
             'indicator_class': self.get_indicator_class(),
             'image_path' : self.runtime.local_resource_url(self, 'public/images/'),
+            'show_correctness' : self.get_show_correctness(),
             'location': str(self.location).split('@')[-1]
         }
 
@@ -173,6 +174,21 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         template_str = self.resource_string(template_path)
         template = Template(template_str)
         return template.render(Context(context))
+    
+    def get_show_correctness(self):
+        if hasattr(self, 'show_correctness'):
+            if self.show_correctness == 'past_due':
+                #si no se hace lo del tzinfo, django se cae
+                start_time = self.due.replace(tzinfo=utc)
+                end_time = datetime.now().replace(tzinfo=utc)
+                if start_time < end_time:
+                    return "always"
+                else:
+                    return "never"
+            else:
+                return self.show_correctness
+        else:
+            return "always"
 
 
     @XBlock.json_handler
@@ -181,7 +197,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         #check correctness
         buenas = 0.0
         malas = 0.0
-        total = len(self.student_answers)
+        total = len(self.answers)
 
         for k,v in self.student_answers.items():
             if v == self.answers[k]:
