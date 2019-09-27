@@ -45,6 +45,12 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
             statusDiv.removeClass('unanswered');
             statusDiv.addClass(result.indicator_class);
         }else{
+            statusDiv.removeClass('correct');
+            statusDiv.removeClass('incorrect');
+            statusDiv.removeClass('unanswered');
+            //no deberia pasar pero por si las moscas
+            if(result.indicator_class == 'unanswered')
+                statusDiv.addClass('unanswered');
             $element.find('.notificacion').html('');
             $element.find('.notificacion').removeClass('correcto');
             $element.find('.notificacion').removeClass('incorrecto');

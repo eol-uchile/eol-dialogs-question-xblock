@@ -119,7 +119,15 @@
   }
   
 .dialogsq_block .submit:hover {
-    background-color: #065683;
+    background: #065683;
+    box-shadow: none;
+    border-width: 1px;
+ }
+
+ .dialogsq_block .submit:focus {
+    background: #065683;
+    box-shadow: none;
+    border-width: 1px;
  }
 
 .dialogsq_block .submit[disabled=disabled], .vof_block .action .check:disabled {
@@ -168,4 +176,9 @@
 
 .dialogsq_block .Derecha .the_answer{
     float: right;
+}
+
+.dialogsq_block .notificacion .fa-info-circle {
+    margin-right: 5px;
+    color: #0075b4;
 }

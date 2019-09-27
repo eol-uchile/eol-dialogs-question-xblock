@@ -6,6 +6,10 @@ from xblock.core import XBlock
 from xblock.fields import Integer, Scope, String, Boolean, Dict, Float
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
+from datetime import datetime, timedelta
+import pytz
+
+utc=pytz.UTC
 
 # Make '_' a no-op so we can scrape strings
 _ = lambda text: text
@@ -221,7 +225,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         except IntegrityError:
             pass
         #return to show score
-        return {'max_attempts': self.max_attempts, 'attempts': self.attempts, 'score':self.score, 'indicator_class': self.get_indicator_class() }
+        return {'max_attempts': self.max_attempts, 'attempts': self.attempts, 'score':self.score, 'indicator_class': self.get_indicator_class(), 'show_correctness' : self.get_show_correctness() }
 
     @XBlock.json_handler
     def getanswers(self, data, suffix=''):

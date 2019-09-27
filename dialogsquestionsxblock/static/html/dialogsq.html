@@ -1,5 +1,5 @@
 <div class="dialogsq_block">
-    {% if show_correctness != 'never' %}
+    {% if show_correctness != 'never' or indicator_class == 'unanswered' %}
     <div class="{{ xblock.side }} status {{ indicator_class }}" id="status_{{ location }}">
     {% else %}
     <div class="{{ xblock.side }} status " id="status_{{ location }}">
@@ -34,13 +34,15 @@
             {% endif %}
             </span>
             <span class="notificacion">
-                {% if xblock.attempts >= 1 %}
-                    {% if xblock.score >= 1 %}
-                        <img src="{{ image_path }}correct-icon.png"/>
-                    {% elif xblock.score <= 0 %}
-                        <img src="{{ image_path }}incorrect-icon.png"/>
-                    {% else %}
-                        <img src="{{ image_path }}partial-icon.png"/>
+                {% if show_correctness != 'never' %}
+                    {% if xblock.attempts >= 1 %}
+                        {% if xblock.score >= 1 %}
+                            <img src="{{ image_path }}correct-icon.png"/>
+                        {% elif xblock.score <= 0 %}
+                            <img src="{{ image_path }}incorrect-icon.png"/>
+                        {% else %}
+                            <img src="{{ image_path }}partial-icon.png"/>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             </span>
