@@ -6,7 +6,7 @@ from xblock.core import XBlock
 from xblock.fields import Integer, Scope, String, Boolean, Dict, Float
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
-from datetime import datetime, timedelta
+import datetime
 import pytz
 
 utc=pytz.UTC
@@ -70,6 +70,14 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         )
     )
 
+    theme = String(
+        display_name = _("Estilo"),
+        help = _("Cambiar estilo de la pregunta"),
+        default = "SumaySigue",
+        values = ["SumaySigue", "Media"],
+        scope = Scope.settings
+    )
+
     answers = Dict(
         help=_(
             'Respuestas de las preguntas'
@@ -92,7 +100,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             'Nro de veces que el estudiante puede intentar responder'
         ),
         default=2,
-        values={'min': 1},
+        values={'min': 0},
         scope=Scope.settings,
     )
 
@@ -109,11 +117,13 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.user_state,
     )
 
-    show_answers = Boolean(
-        display_name='Mostrar Respuesta',
-        help="Mostrar boton de mostrar respuestas", 
-        default=False,
-        scope=Scope.settings)
+    show_answer = String(
+        display_name = "Mostrar Respuestas",
+        help = "Si aparece o no el boton mostrar respuestas",
+        default = "Finalizado",
+        values = ["Mostrar", "Finalizado", "Ocultar"],
+        scope = Scope.settings
+    )
 
     score = Float(
         default=0.0,
@@ -122,7 +132,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     has_score = True
 
-    editable_fields = ('image_url', 'background_color', 'text_color', 'side', 'content', 'max_attempts', 'weight', 'show_answers', 'answers')
+    editable_fields = ('image_url', 'background_color', 'text_color', 'side', 'content', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -171,7 +181,8 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             'indicator_class': self.get_indicator_class(),
             'image_path' : self.runtime.local_resource_url(self, 'public/images/'),
             'show_correctness' : self.get_show_correctness(),
-            'location': str(self.location).split('@')[-1]
+            'location': str(self.location).split('@')[-1],
+            'is_past_due': self.get_is_past_due
         }
 
     def render_template(self, template_path, context):
@@ -182,10 +193,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
     def get_show_correctness(self):
         if hasattr(self, 'show_correctness'):
             if self.show_correctness == 'past_due':
-                #si no se hace lo del tzinfo, django se cae
-                start_time = self.due.replace(tzinfo=utc)
-                end_time = datetime.now().replace(tzinfo=utc)
-                if start_time < end_time:
+                if self.is_past_due():
                     return "always"
                 else:
                     return "never"
@@ -193,39 +201,79 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
                 return self.show_correctness
         else:
             return "always"
+    
+    def get_is_past_due(self):
+        if hasattr(self, 'show_correctness'):
+            return self.is_past_due()
+        else:
+            return False
+
+    def is_past_due(self):
+        """
+        Determine if component is past-due
+        """
+        # These values are pulled from platform.
+        # They are defaulted to None for tests.
+        due = getattr(self, 'due', None)
+        graceperiod = getattr(self, 'graceperiod', None)
+        # Calculate the current DateTime so we can compare the due date to it.
+        # datetime.utcnow() returns timezone naive date object.
+        now = datetime.datetime.utcnow()
+        if due is not None:
+            # Remove timezone information from platform provided due date.
+            # Dates are stored as UTC timezone aware objects on platform.
+            due = due.replace(tzinfo=None)
+            if graceperiod is not None:
+                # Compare the datetime objects (both have to be timezone naive)
+                due = due + graceperiod
+            return now > due
+        return False
 
 
     @XBlock.json_handler
     def savestudentanswers(self, data, suffix=''):  # pylint: disable=unused-argument
-        self.student_answers = data['student_answers']
-        #check correctness
-        buenas = 0.0
-        malas = 0.0
-        total = len(self.answers)
+        #Reviso si no estoy haciendo trampa y contestando mas veces en paralelo
+        errores = False
+        if ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
+            self.student_answers = data['student_answers']
+            #check correctness
+            buenas = 0.0
+            malas = 0.0
+            total = len(self.answers)
 
-        for k,v in self.student_answers.items():
-            if v == self.answers[k]:
-                buenas += 1
-        
-        malas = (total-buenas)
+            for k,v in self.student_answers.items():
+                if v == self.answers[k]:
+                    buenas += 1
+            
+            malas = (total-buenas)
 
-        #update score and classes
-        self.score = float(buenas/(malas+buenas))
-        ptje = self.weight*self.score
-        try:
-            self.runtime.publish(
-                self,
-                'grade',
-                {
-                    'value': ptje,
-                    'max_value': self.weight
-                }
-            )
-            self.attempts += 1
-        except IntegrityError:
-            pass
+            #update score and classes
+            self.score = float(buenas/(malas+buenas))
+            ptje = self.weight*self.score
+            try:
+                self.runtime.publish(
+                    self,
+                    'grade',
+                    {
+                        'value': ptje,
+                        'max_value': self.weight
+                    }
+                )
+                self.attempts += 1
+            except IntegrityError:
+                pass
+        else:
+            errores = True
         #return to show score
-        return {'max_attempts': self.max_attempts, 'attempts': self.attempts, 'score':self.score, 'indicator_class': self.get_indicator_class(), 'show_correctness' : self.get_show_correctness() }
+        return {
+                'max_attempts': self.max_attempts,
+                'attempts': self.attempts, 
+                'score':self.score, 
+                'indicator_class': self.get_indicator_class(), 
+                'show_correctness' : self.get_show_correctness(),
+                'show_answer': self.show_answer,
+                'errores': errores
+            }
 
     @XBlock.json_handler
     def getanswers(self, data, suffix=''):

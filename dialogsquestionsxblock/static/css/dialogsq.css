@@ -156,6 +156,7 @@
 
 .dialogsq_block .inputdialogo{
     width:42px;
+    height: 24px;
 }
 
 .dialogsq_block .button_show_answers{
@@ -168,17 +169,46 @@
 
 .dialogsq_block .the_answer{
     position: relative;
-    padding: 20px 20px 0px 20px;
+    padding: 0px 20px 10px 20px;
     font-size: 12px;
     font-style: italic;
     color: #5e5e5e;
 }
 
-.dialogsq_block .Derecha .the_answer{
-    float: right;
-}
-
 .dialogsq_block .notificacion .fa-info-circle {
     margin-right: 5px;
     color: #0075b4;
+}
+
+.dialogsq_block .responder{
+    width: 800px;
+    margin: auto;
+
+}
+
+.dialogsq_block .Derechabox .responder{
+    float:right;
+}
+
+.dialogsq_block .the_answer{
+    width: 800px;
+    margin: auto;
+
+}
+
+.dialogsq_block .Derechabox .the_answer{
+    float: right;
+}
+
+/* CSS for Media theme */
+
+.dialogsq_block.Media .Izquierda .dialogo,
+.dialogsq_block.Media .Derecha .dialogo
+{
+    border-radius: 30px;
+}
+
+.dialogsq_block.Media .Izquierda .cola,
+.dialogsq_block.Media .Derecha .cola{
+    top:47px;
 }

@@ -59,18 +59,33 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
         }
 
         //desactivo el boton si es que se supero el nro de intentos
+        var finalice = false;
         if(result.max_attempts > 0){
             subFeedback.text('Has realizado '+result.attempts+' de '+result.max_attempts+' intentos');
             if(result.attempts >= result.max_attempts){
                 buttonSubmit.attr("disabled", true);
+                finalice = true;
             }
             else{
                 buttonSubmit.attr("disabled", false);
+            }
+
+            if(result.errores){
+                $element.find('.notificacion').html('<span class="icon fa fa-info-circle" aria-hidden="true"></span>Error: El estado de este problema fue modificado, por favor recargue la página.');
             }
         }
         else{
             buttonSubmit.attr("disabled", false);
         }
+
+        if(finalice || (result.attempts >0 && result.max_attempts <= 0)){
+            if(result.show_answer == 'Finalizado' && !$element.find('.button_show_answers').length && result.show_correctness != 'never'){
+                var mostrar_resp = '<span class="button_show_answers">Mostrar Respuesta</span>';
+                $element.find('.responder').append(mostrar_resp);
+                clickShowAnswers();
+            }
+        }
+
         buttonSubmit.html("<span>" + buttonSubmit[0].dataset.value + "</span>");
     }
 
@@ -99,6 +114,8 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
         buttonSubmit = $element.find('.submit');
         buttonSubmit.click(function(eventObject) {
             eventObject.preventDefault();
+            buttonSubmit.html("<span>" + buttonSubmit[0].dataset.checking + "</span>");
+            buttonSubmit.attr("disabled", true);
             var student_answers = {};
             $element.find('.inputdialogo').each(function() {
                 student_answers[$(this).attr('question-id')] = $(this).val();

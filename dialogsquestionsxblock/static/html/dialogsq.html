@@ -1,4 +1,4 @@
-<div class="dialogsq_block">
+<div class="dialogsq_block {{ xblock.theme }}">
     {% if show_correctness != 'never' or indicator_class == 'unanswered' %}
     <div class="{{ xblock.side }} status {{ indicator_class }}" id="status_{{ location }}">
     {% else %}
@@ -9,13 +9,17 @@
         <div class="dialogo" style="background-color: {{ xblock.background_color }}; color: {{ xblock.text_color }};">
             {{xblock.content | safe }}
         </div>
+    </div>
+    <div class="{{ xblock.side }}box submit_box">
         <div class="the_answer">
         </div>
         <div style="clear:both;"></div>
         <div class="responder">
             <span class="buttonsubmit">
             {% if xblock.answers|length > 0 %}
-                {% if xblock.attempts >= xblock.max_attempts %}
+                {% if xblock.attempts >= xblock.max_attempts and xblock.max_attempts > 0 %}
+                    <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
+                {% elif is_past_due %}
                     <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
                 {% else %}
                     <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}">
@@ -25,7 +29,7 @@
             {% endif %}
             </span>
             <span id="submission_feedback_{{ location }}" class="submission-feedback">
-            {% if xblock.attempts > 0 %}
+            {% if xblock.attempts > 0 and xblock.max_attempts > 0 %}
                 {% if xblock.max_attempts > 1 %}
                     Has realizado {{xblock.attempts}} de {{xblock.max_attempts}} intentos.
                 {% else %}
@@ -46,17 +50,31 @@
                     {% endif %}
                 {% endif %}
             </span>
-            {% if xblock.show_answers %}
-            <span class="button_show_answers">
-                Mostrar Respuesta
-            </span>
+            {% if xblock.show_answer == 'Mostrar' and xblock.answers|length > 0 %}
+                {% if show_correctness != 'never' %}
+                    <span class="button_show_answers">
+                        Mostrar Respuesta
+                    </span>
+                {% endif %}
+            {% elif xblock.show_answer == 'Finalizado' and xblock.attempts > 0 and xblock.attempts >= xblock.max_attempts and xblock.answers|length > 0 %}
+                {% if show_correctness != 'never' %}
+                    <span class="button_show_answers">
+                        Mostrar Respuesta
+                    </span>
+                {% endif %}
+            {% elif xblock.show_answer == 'Finalizado' and xblock.attempts > 0 and xblock.max_attempts <= 0 and xblock.answers|length > 0 %}
+                {% if show_correctness != 'never' %}
+                    <span class="button_show_answers">
+                        Mostrar Respuesta
+                    </span>
+                {% endif %}
             {% endif %}
         </div>
         <div class="divstudentanswers">
             {% for key, value in xblock.student_answers.items %}
-              {% if value != 'nada'%}
-              <input type="hidden" class="thestudentanswers" q-id={{key}} value="{{value}}">
-              {% endif %}
+            {% if value != 'nada'%}
+            <input type="hidden" class="thestudentanswers" q-id={{key}} value="{{value}}">
+            {% endif %}
             {% endfor %}
         </div>
     </div>
