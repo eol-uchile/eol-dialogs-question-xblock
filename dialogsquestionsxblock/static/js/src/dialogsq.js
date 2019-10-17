@@ -108,6 +108,7 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
         writeStudentAnswers();
         clickSubmit();
         clickShowAnswers();
+        clickEnableSubmit();
     });
 
     function clickSubmit(){
@@ -143,6 +144,18 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
                 success: updateTextShowAnsers
             });
         });
+    }
+
+    function clickEnableSubmit(){
+        if(statusDiv.hasClass('unanswered')){
+            buttonSubmit = $element.find('.submit');
+            $element.find('input').on('keyup', function(){
+                buttonSubmit.attr("disabled", false);
+            });
+            $element.find('select').on('change', function(){
+                buttonSubmit.attr("disabled", false);
+            });
+        }
     }
 
     function writeStudentAnswers(){

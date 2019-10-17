@@ -58,7 +58,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope = Scope.settings
     )
 
-    content = String(
+    text = String(
         display_name="Contenido del dialogo", 
         multiline_editor='html', 
         resettable_editor=False,
@@ -132,7 +132,9 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     has_score = True
 
-    editable_fields = ('image_url', 'background_color', 'text_color', 'side', 'content', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
+    icon_class = "problem"
+
+    editable_fields = ('image_url', 'background_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -287,6 +289,16 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             else:
                 indicator_class = 'incorrect'
         return indicator_class
+
+    def max_score(self):
+        """
+        Returns the configured number of possible points for this component.
+        Arguments:
+            None
+        Returns:
+            float: The number of possible points for this component
+        """
+        return self.weight
 
     # TO-DO: change this to create the scenarios you'd like to see in the
     # workbench while developing your XBlock.

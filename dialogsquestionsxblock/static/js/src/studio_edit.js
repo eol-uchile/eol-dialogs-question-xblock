@@ -139,7 +139,7 @@ function StudioEditableXBlockMixin(runtime, element) {
                     values[field.name] = field.val();
                 }
 
-                if(field.name == 'content'){
+                if(field.name == 'text'){
                     //objeto dummy para armar las preguntas
                     var $obj = '';
                     $obj = $('<html></html>');

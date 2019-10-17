@@ -1,4 +1,4 @@
-<div class="dialogsq_block {{ xblock.theme }}">
+<div class="problem dialogsq_block {{ xblock.theme }}">
     {% if show_correctness != 'never' or indicator_class == 'unanswered' %}
     <div class="{{ xblock.side }} status {{ indicator_class }}" id="status_{{ location }}">
     {% else %}
@@ -7,7 +7,7 @@
         <div class="personaje" style="background-image: url({{ xblock.image_url }});"></div>
         <div class="cola" style="background-color: {{ xblock.background_color }};"></div>
         <div class="dialogo" style="background-color: {{ xblock.background_color }}; color: {{ xblock.text_color }};">
-            {{xblock.content | safe }}
+            {{xblock.text | safe }}
         </div>
     </div>
     <div class="{{ xblock.side }}box submit_box">
@@ -19,7 +19,7 @@
             {% if xblock.answers|length > 0 %}
                 {% if xblock.attempts >= xblock.max_attempts and xblock.max_attempts > 0 %}
                     <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
-                {% elif is_past_due %}
+                {% elif is_past_due or indicator_class == 'unanswered' %}
                     <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
                 {% else %}
                     <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}">
