@@ -106,10 +106,24 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
 
         findquestions($element.find('.dialogo'));
         writeStudentAnswers();
+        widthInput();
+        actionkeyInput();
         clickSubmit();
         clickShowAnswers();
         clickEnableSubmit();
     });
+
+    function widthInput(){
+        $element.find('input').each(function(){
+            $(this).css("width", (this.value.length + 1) + 'ch');
+        });
+    }
+
+    function actionkeyInput(){
+        $element.find('input').on('keyup', function(){
+            $(this).css("width", (this.value.length + 1) + 'ch');
+        });
+    }
 
     function clickSubmit(){
         buttonSubmit = $element.find('.submit');

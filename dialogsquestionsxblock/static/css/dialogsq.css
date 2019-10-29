@@ -132,7 +132,7 @@
 
 .dialogsq_block .submit[disabled=disabled], .vof_block .action .check:disabled {
     border-color: #d2d0d0;
-    background: #f2f3f3;
+    background: #f2f3f3!important;
     color: #676666;
     cursor:auto;
     border-style: solid;
@@ -156,7 +156,12 @@
 
 .dialogsq_block .inputdialogo{
     width:42px;
+    min-width: 42px;
+    max-width: 400px;
     height: 24px;
+    padding-left: 3px;
+    padding-right: 1px;
+    margin-bottom: 2px;
 }
 
 .dialogsq_block .button_show_answers{
