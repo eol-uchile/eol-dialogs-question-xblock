@@ -61,7 +61,7 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         self.assertEqual(self.xblock.background_color, '#F8E37B')
         self.assertEqual(self.xblock.text_color, '#000000')
         self.assertEqual(self.xblock.side, 'Izquierda')
-        self.assertEqual(self.xblock.content, '<p>Contenido del dialogo.</p>')
+        self.assertEqual(self.xblock.text, '<p>Contenido del dialogo.</p>')
         self.assertEqual(self.xblock.score, 0.0)
         self.assertEqual(self.xblock.attempts, 0)
         self.assertEqual(self.xblock.weight, 1)
@@ -76,12 +76,12 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         request = TestRequest()
         request.method = 'POST'
 
-        data = json.dumps({'values':{'content': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>'},
+        data = json.dumps({'values':{'text': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>'},
                             'defaults':{}
                             })
         request.body = data
         response = self.xblock.submit_studio_edits(request)
-        self.assertEqual(self.xblock.content, 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>')
+        self.assertEqual(self.xblock.text, 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>')
 
     def test_student_view(self):
         # pylint: disable=protected-access
@@ -92,7 +92,7 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         request = TestRequest()
         request.method = 'POST'
 
-        data = json.dumps({'values':{'content': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>'},
+        data = json.dumps({'values':{'text': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>'},
                             'defaults':{}
                             })
         request.body = data
@@ -100,7 +100,7 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
 
         student_view = self.xblock.student_view()
         student_view_html = student_view.content
-        self.assertIn(self.xblock.content, student_view_html)
+        self.assertIn(self.xblock.text, student_view_html)
 
     def test_answers(self):
         # pylint: disable=protected-access
@@ -111,8 +111,9 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         request = TestRequest()
         request.method = 'POST'
 
-        data = json.dumps({'values':{'content': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>',
-                                    'answers': {1: "asdf", 2: "o3"}
+        data = json.dumps({'values':{'text': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>',
+                                    'answers': {1: "asdf", 2: "o3"},
+                                    'max_attempts': 5
                                     },
                             'defaults':{}
                             })
