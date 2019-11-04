@@ -279,7 +279,10 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     @XBlock.json_handler
     def getanswers(self, data, suffix=''):
-        return {'answers': self.answers}
+        if (self.attempts >= self.max_attempts and self.show_answer == 'Finalizado') or self.show_answer == 'Mostrar':
+            return {'answers': self.answers}
+        else:
+            return {}
 
     def get_indicator_class(self):
         indicator_class = 'unanswered'
