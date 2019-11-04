@@ -20,7 +20,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
     display_name = String(
         display_name=_("Display Name"),
         help=_("Display name for this module"),
-        default="Dialogs with Questions XBlock",
+        default="Eol Dialogs with Questions XBlock",
         scope=Scope.settings,
     )
 

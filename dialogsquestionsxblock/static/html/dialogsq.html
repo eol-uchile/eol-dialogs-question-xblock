@@ -18,11 +18,11 @@
             <span class="buttonsubmit">
             {% if xblock.answers|length > 0 %}
                 {% if xblock.attempts >= xblock.max_attempts and xblock.max_attempts > 0 %}
-                    <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
+                    <button class="check btn-brand Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
                 {% elif is_past_due or indicator_class == 'unanswered' %}
-                    <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
+                    <button class="check btn-brand Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}" disabled="disabled">
                 {% else %}
-                    <button class="check Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}">
+                    <button class="check btn-brand Submit submit" data-checking="Enviando..." data-value="Enviar" aria-describedby="submission_feedback_{{ location }}">
                 {% endif %}
                     <span>Enviar</span>
                 </button>
