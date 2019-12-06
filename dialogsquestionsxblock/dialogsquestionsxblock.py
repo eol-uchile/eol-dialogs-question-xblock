@@ -311,8 +311,16 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
              """),
             ("Multiple DialogsQuestionsXBlock",
              """<vertical_demo>
-                <dialogsquestionsxblock/>
-                <dialogsquestionsxblock/>
+                <dialogsquestionsxblock
+                theme='Media'
+                image_url = 'https://static.sumaysigue.uchile.cl/SySMedia/produccion/EPI/T01/A01/img/juanr.png'
+                text = '&lt;p&gt;Contenido del dialogo.&lt;p\&gt;Indica elato &lt;span class="inputdialogo"&gt;respuesta correcta&lt;span\&gt; y '
+                />
+                <dialogsquestionsxblock
+                theme='Media'
+                image_url = 'https://static.sumaysigue.uchile.cl/SySMedia/produccion/EPI/T01/A01/img/juanr.png'
+                side = 'Derecha'
+                />
                 <dialogsquestionsxblock/>
                 </vertical_demo>
              """),

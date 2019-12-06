@@ -80,7 +80,7 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
 
         if(finalice || (result.attempts >0 && result.max_attempts <= 0)){
             if(result.show_answer == 'Finalizado' && !$element.find('.button_show_answers').length && result.show_correctness != 'never'){
-                var mostrar_resp = '<span class="button_show_answers">Mostrar Respuesta</span>';
+                var mostrar_resp = '<button class="button_show_answers"><span class="icon fa fa-info-circle" aria-hidden="true"></span><br><span>Mostrar<br>Respuesta</span></button>';
                 $element.find('.responder').append(mostrar_resp);
                 clickShowAnswers();
             }
@@ -92,14 +92,16 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
     function updateTextShowAnsers(result) {
         var $obj = '';
         $obj = $('<html></html>');
-        $obj.html('<b>Respuesta: </b>'+$element.find('.dialogo').html());
+        $obj.html($element.find('.dialogsq_block').html());
+        $obj.find('.responder').remove();
+        $obj.find('.the_answer').remove();
         $.each($obj.find(".inputdialogo"), function(j,v){
-            $(v).replaceWith(result.answers[$(v).attr('question-id')]);
+            $(v).replaceWith('<strong>'+result.answers[$(v).attr('question-id')]+'</strong>');
         })
         $.each($obj.find(".dropdowndialogo"), function(j,v){
-            $(v).replaceWith(result.answers[$(v).attr('question-id')]);
+            $(v).replaceWith('<strong>'+result.answers[$(v).attr('question-id')]+'</strong>');
         })
-        $element.find('.the_answer').html($obj.html());
+        $element.find('.the_answer').html('<p><strong>Respuesta:</strong></p>'+$obj.html());
     }
 
     $(function ($) {
