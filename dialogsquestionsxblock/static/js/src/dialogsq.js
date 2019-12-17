@@ -90,18 +90,23 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
     }
 
     function updateTextShowAnsers(result) {
-        var $obj = '';
-        $obj = $('<html></html>');
-        $obj.html($element.find('.dialogsq_block').html());
-        $obj.find('.responder').remove();
-        $obj.find('.the_answer').remove();
-        $.each($obj.find(".inputdialogo"), function(j,v){
-            $(v).replaceWith('<strong>'+result.answers[$(v).attr('question-id')]+'</strong>');
-        })
-        $.each($obj.find(".dropdowndialogo"), function(j,v){
-            $(v).replaceWith('<strong>'+result.answers[$(v).attr('question-id')]+'</strong>');
-        })
-        $element.find('.the_answer').html('<p><strong>Respuesta:</strong></p>'+$obj.html());
+        $ticket = '<img src="'+settings.image_path+'correct-icon.png" width="13px"/>';
+        $cruz = '<img src="'+settings.image_path+'incorrect-icon.png" width="13px"/>';
+        $obj = $element.find('.dialogsq_block');
+        $obj.find('.showing_answers').remove();
+            $.each($obj.find(".inputdialogo"), function(j,v){
+                $img = $cruz;
+                if(result.answers[$(v).attr('question-id')] == $(v).val())
+                    $img = $ticket;
+                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+result.answers[$(v).attr('question-id')]+'&nbsp; </span>');
+            })
+            $.each($obj.find(".dropdowndialogo"), function(j,v){
+                $img = $cruz;
+                console.log(result.answers[$(v).attr('question-id')]+" "+$(v).val());
+                if(result.answers[$(v).attr('question-id')] == $(v).val())
+                    $img = $ticket;
+                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+result.answers[$(v).attr('question-id')]+'&nbsp; </span>');
+            })
     }
 
     $(function ($) {
@@ -163,13 +168,17 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
     }
 
     function clickEnableSubmit(){
-        if(statusDiv.hasClass('unanswered')){
+        if($element.find('.status').hasClass('unanswered')){
             buttonSubmit = $element.find('.submit');
             $element.find('input').on('keyup', function(){
-                buttonSubmit.attr("disabled", false);
+                if($element.find('.status').hasClass('unanswered')){
+                    buttonSubmit.attr("disabled", false);
+                }
             });
             $element.find('select').on('change', function(){
-                buttonSubmit.attr("disabled", false);
+                if($element.find('.status').hasClass('unanswered')){
+                    buttonSubmit.attr("disabled", false);
+                }
             });
         }
     }

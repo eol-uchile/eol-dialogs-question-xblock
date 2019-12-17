@@ -18,6 +18,8 @@ function findquestions(d, replace = true) {
         var opcionesStr = $(v).text();
         var opciones = opcionesStr.split(',');
         for(var i in opciones){
+            //si no hago trim, da problemas al buscar parentesis
+            opciones[i] = opciones[i].trim();
             var opc = opciones[i];
             //veo si es la correcta (entre parentesis)
             if(opc.charAt(0) == "(" && opc.charAt(opc.length - 1) == ")"){
