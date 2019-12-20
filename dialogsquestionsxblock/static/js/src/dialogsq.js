@@ -80,7 +80,7 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
 
         if(finalice || (result.attempts >0 && result.max_attempts <= 0)){
             if(result.show_answer == 'Finalizado' && !$element.find('.button_show_answers').length && result.show_correctness != 'never'){
-                var mostrar_resp = '<span class="button_show_answers">Mostrar Respuesta</span>';
+                var mostrar_resp = '<button class="button_show_answers"><span class="icon fa fa-info-circle" aria-hidden="true"></span><br><span>Mostrar<br>Respuesta</span></button>';
                 $element.find('.responder').append(mostrar_resp);
                 clickShowAnswers();
             }
@@ -90,16 +90,23 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
     }
 
     function updateTextShowAnsers(result) {
-        var $obj = '';
-        $obj = $('<html></html>');
-        $obj.html('<b>Respuesta: </b>'+$element.find('.dialogo').html());
-        $.each($obj.find(".inputdialogo"), function(j,v){
-            $(v).replaceWith(result.answers[$(v).attr('question-id')]);
-        })
-        $.each($obj.find(".dropdowndialogo"), function(j,v){
-            $(v).replaceWith(result.answers[$(v).attr('question-id')]);
-        })
-        $element.find('.the_answer').html($obj.html());
+        $ticket = '<img src="'+settings.image_path+'correct-icon.png" width="13px"/>';
+        $cruz = '<img src="'+settings.image_path+'incorrect-icon.png" width="13px"/>';
+        $obj = $element.find('.dialogsq_block');
+        $obj.find('.showing_answers').remove();
+            $.each($obj.find(".inputdialogo"), function(j,v){
+                $img = $cruz;
+                if(result.answers[$(v).attr('question-id')] == $(v).val())
+                    $img = $ticket;
+                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+result.answers[$(v).attr('question-id')]+'&nbsp; </span>');
+            })
+            $.each($obj.find(".dropdowndialogo"), function(j,v){
+                $img = $cruz;
+                console.log(result.answers[$(v).attr('question-id')]+" "+$(v).val());
+                if(result.answers[$(v).attr('question-id')] == $(v).val())
+                    $img = $ticket;
+                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+result.answers[$(v).attr('question-id')]+'&nbsp; </span>');
+            })
     }
 
     $(function ($) {
@@ -161,13 +168,17 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
     }
 
     function clickEnableSubmit(){
-        if(statusDiv.hasClass('unanswered')){
+        if($element.find('.status').hasClass('unanswered')){
             buttonSubmit = $element.find('.submit');
             $element.find('input').on('keyup', function(){
-                buttonSubmit.attr("disabled", false);
+                if($element.find('.status').hasClass('unanswered')){
+                    buttonSubmit.attr("disabled", false);
+                }
             });
             $element.find('select').on('change', function(){
-                buttonSubmit.attr("disabled", false);
+                if($element.find('.status').hasClass('unanswered')){
+                    buttonSubmit.attr("disabled", false);
+                }
             });
         }
     }

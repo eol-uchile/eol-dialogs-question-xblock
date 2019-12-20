@@ -29,11 +29,11 @@
             {% endif %}
             </span>
             <span id="submission_feedback_{{ location }}" class="submission-feedback">
-            {% if xblock.attempts > 0 and xblock.max_attempts > 0 %}
-                {% if xblock.max_attempts > 1 %}
-                    Has realizado {{xblock.attempts}} de {{xblock.max_attempts}} intentos.
-                {% else %}
+            {% if xblock.max_attempts > 0 and xblock.answers|length > 0%}
+                {% if xblock.max_attempts == 1 %}
                     Has realizado {{xblock.attempts}} de {{xblock.max_attempts}} intento.
+                {% else %}
+                    Has realizado {{xblock.attempts}} de {{xblock.max_attempts}} intentos.
                 {% endif %}
             {% endif %}
             </span>
@@ -52,21 +52,15 @@
             </span>
             {% if xblock.show_answer == 'Mostrar' and xblock.answers|length > 0 %}
                 {% if show_correctness != 'never' %}
-                    <span class="button_show_answers">
-                        Mostrar Respuesta
-                    </span>
+                    <button class="button_show_answers"><span class="icon fa fa-info-circle" aria-hidden="true"></span><br><span>Mostrar<br>Respuesta</span></button>
                 {% endif %}
             {% elif xblock.show_answer == 'Finalizado' and xblock.attempts > 0 and xblock.attempts >= xblock.max_attempts and xblock.answers|length > 0 %}
                 {% if show_correctness != 'never' %}
-                    <span class="button_show_answers">
-                        Mostrar Respuesta
-                    </span>
+                    <button class="button_show_answers"><span class="icon fa fa-info-circle" aria-hidden="true"></span><br><span>Mostrar<br>Respuesta</span></button>
                 {% endif %}
             {% elif xblock.show_answer == 'Finalizado' and xblock.attempts > 0 and xblock.max_attempts <= 0 and xblock.answers|length > 0 %}
                 {% if show_correctness != 'never' %}
-                    <span class="button_show_answers">
-                        Mostrar Respuesta
-                    </span>
+                    <button class="button_show_answers"><span class="icon fa fa-info-circle" aria-hidden="true"></span><br><span>Mostrar<br>Respuesta</span></button>
                 {% endif %}
             {% endif %}
         </div>

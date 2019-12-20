@@ -165,18 +165,27 @@
 }
 
 .dialogsq_block .button_show_answers{
-    font-size:14px;
     cursor: pointer;
     color: #0066a2;
-    padding: 10px;
+    font-weight: 400;
+    border: none;
+    background-color: transparent!important;
+    background-image: none!important;
+    box-shadow: none!important;
+}
+
+.dialogsq_block .button_show_answers:hover{
+    border: 1px solid;
+    border-color: #0075b4;
+    border-radius: 3px;
+    background-image: none;
+    background-color: transparent;
     font-weight: 400;
 }
 
 .dialogsq_block .the_answer{
     position: relative;
     padding: 0px 20px 10px 20px;
-    font-size: 12px;
-    font-style: italic;
     color: #5e5e5e;
 }
 
@@ -207,13 +216,24 @@
 
 /* CSS for Media theme */
 
-.dialogsq_block.Media .Izquierda .dialogo,
-.dialogsq_block.Media .Derecha .dialogo
-{
-    border-radius: 30px;
-}
-
 .dialogsq_block.Media .Izquierda .cola,
 .dialogsq_block.Media .Derecha .cola{
-    top:47px;
+    display:none;
+}
+
+.dialogsq_block.Media .personaje{
+    background-size: 95px;
+    top:5px;
+}
+
+.dialogsq_block.Media .Izquierda .dialogo {
+    left: 140px;
+    max-width: 630px!important;
+    width: 630px;
+}
+
+.dialogsq_block.Media .Derecha .dialogo {
+    right: 140px;
+    max-width: 630px!important;
+    width: 630px;
 }
