@@ -14,6 +14,9 @@ utc=pytz.UTC
 # Make '_' a no-op so we can scrape strings
 _ = lambda text: text
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
@@ -243,7 +246,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             malas = 0.0
             total = len(self.answers)
 
-            for k,v in self.student_answers.items():
+            for k,v in list(self.student_answers.items()):
                 if v == self.answers[k]:
                     buenas += 1
             
