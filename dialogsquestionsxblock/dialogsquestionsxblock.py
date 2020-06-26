@@ -239,7 +239,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
     def savestudentanswers(self, data, suffix=''):  # pylint: disable=unused-argument
         #Reviso si no estoy haciendo trampa y contestando mas veces en paralelo
         errores = False
-        if ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
+        if self.max_attempts == None or ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
             self.student_answers = data['student_answers']
             #check correctness
             buenas = 0.0
