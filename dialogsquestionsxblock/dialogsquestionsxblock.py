@@ -137,7 +137,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     icon_class = "problem"
 
-    editable_fields = ('image_url', 'background_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
+    editable_fields = ('display_name', 'image_url', 'background_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
