@@ -79,7 +79,7 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         data = json.dumps({'values':{'text': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>'},
                             'defaults':{}
                             })
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.submit_studio_edits(request)
         self.assertEqual(self.xblock.text, 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>')
 
@@ -95,7 +95,7 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         data = json.dumps({'values':{'text': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>'},
                             'defaults':{}
                             })
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.submit_studio_edits(request)
 
         student_view = self.xblock.student_view()
@@ -117,7 +117,7 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
                                     },
                             'defaults':{}
                             })
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.submit_studio_edits(request)
         self.assertEqual(self.xblock.answers, {'1': "asdf", '2': "o3"})
 
@@ -126,31 +126,31 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         request.method = 'POST'
 
         data = json.dumps({'student_answers': {'1': "asdf", '2': "o3"}})
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'correct')
         self.assertEqual(response.json_body['attempts'], 1)
 
         data = json.dumps({'student_answers': {'1': "fdsa", '2': "o3"}})
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
         self.assertEqual(response.json_body['attempts'], 2)
 
         data = json.dumps({'student_answers': {'1': "asdf"}})
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
         self.assertEqual(response.json_body['attempts'], 3)
 
         data = json.dumps({'student_answers': {'1': "asdf", '2': "o2"}})
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
         self.assertEqual(response.json_body['attempts'], 4)
 
         data = json.dumps({'student_answers': {'1': "qwerty", '2': "o1"}})
-        request.body = data
+        request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
         self.assertEqual(response.json_body['attempts'], 5)

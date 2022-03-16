@@ -14,6 +14,9 @@ utc=pytz.UTC
 # Make '_' a no-op so we can scrape strings
 _ = lambda text: text
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
@@ -134,7 +137,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     icon_class = "problem"
 
-    editable_fields = ('image_url', 'background_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
+    editable_fields = ('display_name', 'image_url', 'background_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -236,14 +239,14 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
     def savestudentanswers(self, data, suffix=''):  # pylint: disable=unused-argument
         #Reviso si no estoy haciendo trampa y contestando mas veces en paralelo
         errores = False
-        if ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
+        if self.max_attempts == None or ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
             self.student_answers = data['student_answers']
             #check correctness
             buenas = 0.0
             malas = 0.0
             total = len(self.answers)
 
-            for k,v in self.student_answers.items():
+            for k,v in list(self.student_answers.items()):
                 if v == self.answers[k]:
                     buenas += 1
             
