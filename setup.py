@@ -26,8 +26,8 @@ def package_data(pkg, roots):
 setup(
     name='dialogsquestionsxblock-xblock',
     version='0.1',
-    description='dialogsquestionsxblock XBlock',   # TODO: write a better description.
-    license='UNKNOWN',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
+    description='dialogsquestionsxblock XBlock', 
+    license='AGPL v3',
     packages=[
         'dialogsquestionsxblock',
     ],
