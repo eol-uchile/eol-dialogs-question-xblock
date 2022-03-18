@@ -61,7 +61,13 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
         //desactivo el boton si es que se supero el nro de intentos
         var finalice = false;
         if(result.max_attempts > 0){
-            subFeedback.text('Has realizado '+result.attempts+' de '+result.max_attempts+' intentos');
+            if(result.max_attempts == 1){
+                subFeedback.text('Ha realizado '+result.attempts+' de '+result.max_attempts+' intento');
+            }
+            else{
+                subFeedback.text('Ha realizado '+result.attempts+' de '+result.max_attempts+' intentos');
+            }
+            
             if(result.attempts >= result.max_attempts){
                 buttonSubmit.attr("disabled", true);
                 finalice = true;

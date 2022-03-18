@@ -31,9 +31,9 @@
             <span id="submission_feedback_{{ location }}" class="submission-feedback">
             {% if xblock.max_attempts > 0 and xblock.answers|length > 0%}
                 {% if xblock.max_attempts == 1 %}
-                    Has realizado {{xblock.attempts}} de {{xblock.max_attempts}} intento.
+                    Ha realizado {{xblock.attempts}} de {{xblock.max_attempts}} intento.
                 {% else %}
-                    Has realizado {{xblock.attempts}} de {{xblock.max_attempts}} intentos.
+                    Ha realizado {{xblock.attempts}} de {{xblock.max_attempts}} intentos.
                 {% endif %}
             {% endif %}
             </span>

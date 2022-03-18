@@ -4,6 +4,7 @@ from django.template import Context, Template
 
 from xblock.core import XBlock
 from xblock.fields import Integer, Scope, String, Boolean, Dict, Float
+from xmodule.fields import Date
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin
 import datetime
@@ -131,6 +132,11 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
     score = Float(
         default=0.0,
         scope=Scope.user_state,
+    )
+
+    last_submission_time = Date(
+        help= "Last submission time",
+        scope=Scope.user_state
     )
 
     has_score = True
@@ -269,6 +275,8 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
                 pass
         else:
             errores = True
+
+        self.last_submission_time = datetime.datetime.now(utc)
         #return to show score
         return {
                 'max_attempts': self.max_attempts,
@@ -277,7 +285,8 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
                 'indicator_class': self.get_indicator_class(), 
                 'show_correctness' : self.get_show_correctness(),
                 'show_answer': self.show_answer,
-                'errores': errores
+                'errores': errores,
+                'last_submission_time': self.last_submission_time.isoformat()
             }
 
     @XBlock.json_handler
