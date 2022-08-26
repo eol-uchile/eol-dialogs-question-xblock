@@ -46,6 +46,13 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.settings,
     )
 
+    border_color = String(
+        display_name=_("Color del borde"),
+        help=_("Color del borde del contenedor del dialogo"),
+        default="#F8E37B",
+        scope=Scope.settings,
+    )
+
     text_color = String(
         display_name=_("Color del texto"),
         help=_("Color del texto del dialogo"),
@@ -137,7 +144,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     icon_class = "problem"
 
-    editable_fields = ('display_name', 'image_url', 'background_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
+    editable_fields = ('display_name', 'image_url', 'background_color', 'border_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""

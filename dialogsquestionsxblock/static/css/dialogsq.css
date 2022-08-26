@@ -237,3 +237,40 @@
     max-width: 630px!important;
     width: 630px;
 }
+
+/* CSS for RedFid theme */
+
+.eoldialogs_block.RedFid .Izquierda .cola{
+    background-image: url(https://static.sumaysigue.uchile.cl/cmmeduformacion/produccion/assets/img/cola_izq_border.png);
+    top: 45px;
+    width: 45px;
+    height: 32px;
+    left: 140px;
+}
+
+.eoldialogs_block.RedFid .Derecha .cola{
+    background-image: url(https://static.sumaysigue.uchile.cl/cmmeduformacion/produccion/assets/img/cola_der_border.png);
+    top: 45px;
+    width: 45px;
+    height: 32px;
+    left: 616px;
+}
+
+
+.eoldialogs_block.RedFid .personaje{
+
+}
+
+.eoldialogs_block.RedFid .Izquierda .dialogo {
+
+    border:  4px solid;
+    background-color: #FFF0 !important;
+
+    
+}
+
+.eoldialogs_block.RedFid .Derecha .dialogo {
+
+    border:  4px solid;
+    background-color: #FFF0 !important; 
+}
