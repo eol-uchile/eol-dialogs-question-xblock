@@ -5,13 +5,12 @@
     <div class="{{ xblock.side }} status " id="status_{{ location }}">
     {% endif %}
         <div class="personaje" style="background-image: url({{ xblock.image_url }});"></div>
-        <div class="cola" style="background-color: {{ 
-            {% if xblock.theme == "RedFid" %}
-                {{ xblock.border_color }}
-            {% else %}
-                {{ xblock.background_color }}
-            {% endif %};"
-         }};"></div>
+        <div class="cola" style="background-color:
+        {% if xblock.theme == "RedFid" %}
+            {{ xblock.border_color }}
+        {% else %}
+            {{ xblock.background_color }}
+        {% endif %};"></div>
         <div class="dialogo" style="background-color: {{ xblock.background_color }}; border-color:{{ xblock.border_color }}; color: {{ xblock.text_color }};">
             {{xblock.text | safe }}
         </div>
