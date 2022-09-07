@@ -243,7 +243,7 @@
 .dialogsq_block.RedFid .Izquierda .cola{
     background-image: url(https://static.sumaysigue.uchile.cl/cmmeduformacion/produccion/assets/img/cola_izq_border.png);
     top: 45px;
-    width: 45px;
+    width: 44px;
     height: 32px;
     left: 140px;
 }
@@ -251,7 +251,7 @@
 .dialogsq_block.RedFid .Derecha .cola{
     background-image: url(https://static.sumaysigue.uchile.cl/cmmeduformacion/produccion/assets/img/cola_der_border.png);
     top: 45px;
-    width: 45px;
+    width: 44px;
     height: 32px;
     left: 616px;
 }
