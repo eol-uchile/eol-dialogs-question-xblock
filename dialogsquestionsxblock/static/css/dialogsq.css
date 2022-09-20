@@ -256,12 +256,12 @@
     left: 616px;
 }
 
-.eoldialogs_block.RedFid .personaje{
+.dialogsq_block.RedFid .personaje{
     background-position-x: center;
     background-position-y: top;
 }
 
-.eoldialogs_block.RedFid .nombrePerso{
+.dialogsq_block.RedFid .nombrePerso{
     text-align: center;
     position: relative;
     top: 112px;
