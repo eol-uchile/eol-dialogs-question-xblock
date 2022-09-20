@@ -4,7 +4,7 @@
     {% else %}
     <div class="{{ xblock.side }} status " id="status_{{ location }}">
     {% endif %}
-        <div class="personaje" style="background-image: url({{ xblock.image_url }});"></div>
+        <div class="personaje" style="background-image: url({{ xblock.image_url }});">{% if xblock.theme == "RedFid" %}<div class="nombrePerso">{{xblock.character_name}}</div>{% endif %}</div>
         <div class="cola" style="background-color:
         {% if xblock.theme == "RedFid" %}
             {{ xblock.border_color }}

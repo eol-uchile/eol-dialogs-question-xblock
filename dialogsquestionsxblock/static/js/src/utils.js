@@ -2,6 +2,7 @@ function findquestions(d, replace = true) {
     var answers = {};
     var c = 1;
     //reviso si hay inputs o dropdowns en el dialogo
+    
     //pongo los inputs
     $.each($(d).find(".inputdialogo"), function(j,v){
         var answer = $(v).text();

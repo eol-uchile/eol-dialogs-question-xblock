@@ -256,8 +256,19 @@
     left: 616px;
 }
 
+.eoldialogs_block.RedFid .personaje{
+    background-position-x: center;
+    background-position-y: top;
+}
 
-.dialogsq_block.RedFid .personaje{
+.eoldialogs_block.RedFid .nombrePerso{
+    text-align: center;
+    position: relative;
+    top: 112px;
+    text-transform: uppercase;
+    color: #707070;
+    font-size: 14px;
+    font-weight: bold;
 
 }
 

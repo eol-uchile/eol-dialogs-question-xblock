@@ -68,6 +68,13 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope = Scope.settings
     )
 
+    character_name = String(
+        display_name=_("Nombre del personaje (RedFid)"),
+        help=_("Solo disponible en RedFid"),
+        default="Firulais",
+        scope=Scope.settings,
+    )
+
     text = String(
         display_name="Contenido del dialogo", 
         multiline_editor='html', 
@@ -144,7 +151,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     icon_class = "problem"
 
-    editable_fields = ('display_name', 'image_url', 'background_color', 'border_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
+    editable_fields = ('display_name', 'image_url', 'background_color', 'border_color', 'text_color', 'side', 'character_name', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
