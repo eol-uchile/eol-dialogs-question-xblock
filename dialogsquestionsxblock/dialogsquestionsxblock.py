@@ -1,3 +1,4 @@
+from ipaddress import v6_int_to_packed
 import pkg_resources
 
 from django.template import Context, Template
@@ -82,7 +83,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         default="<p>Contenido del dialogo.</p>", 
         scope=Scope.settings,
         help=_("Indica el contenido del dialogo, si se quieren incluir entradas de texto," 
-            "usar el formato &lt;span class='inputdialogo'&gt;respuesta correcta&lt;/span&gt; y si se quieren "
+            "usar el formato &lt;span class='inputdialogo'&gt;respuesta correcta_otra respuesta correcta&lt;/span&gt; y si se quieren "
             "incluir dropdowns &lt;span class='dropdowndialogo'&gt;opcion incorrecta,(opcioncorrecta),opcion incorrecta&lt;/span&gt; <br/> Si necesitas utilizar la coma como símbolo puede usar estos caracteres '⸴ ⹁ ､ ⸒'"
         )
     )
@@ -254,7 +255,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         #Reviso si no estoy haciendo trampa y contestando mas veces en paralelo
         errores = False
         if self.max_attempts == None or ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
-            self.student_answers = data['student_answers']
+            self.student_answers = data['student_answers']#Respuestas de estudiantes
             #check correctness
             buenas = 0.0
             malas = 0.0
@@ -262,17 +263,21 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
             for k,v in list(self.student_answers.items()):
                 #Revisar multiples opciones e respuestas
-                if v.find("[_[i]_]"): #Verificar inputs
-                    optionsinput = v.replace("[_[i]_]","")
-                    optionsinputs = optionsinput.split("_")
+                anstocheck = self.answers[k]
+
+                if anstocheck.find("[_[i]_]"): #Verificar si es input
+                    optionsinput = anstocheck.replace("[_[i]_]","")
+                    optionsinputs = optionsinput.split("_")#Separo las posibles soluciones
                     for option in optionsinputs:
-                        if option == self.answers[k]:
+                        if option == v:
                             buenas += 1
-                elif v.find("[_[s]_]"): #Verificar selects
-                    optionselect = v.replace("[_[s]_]","")
-                    if optionselect == self.answers[k]:
+                            break
+
+                elif anstocheck.find("[_[s]_]"): #Verificar si es select
+                    optionselect = anstocheck.replace("[_[s]_]","")
+                    if optionselect == v:
                         buenas += 1
-            
+
             malas = (total-buenas)
 
             #update score and classes
