@@ -83,7 +83,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.settings,
         help=_("Indica el contenido del dialogo, si se quieren incluir entradas de texto," 
             "usar el formato &lt;span class='inputdialogo'&gt;respuesta correcta&lt;/span&gt; y si se quieren "
-            "incluir dropdowns &lt;span class='dropdowndialogo'&gt;opcion incorrecta,(opcioncorrecta),opcion incorrecta&lt;/span&gt;"
+            "incluir dropdowns &lt;span class='dropdowndialogo'&gt;opcion incorrecta,(opcioncorrecta),opcion incorrecta&lt;/span&gt; <br/> Si necesitas utilizar la coma como símbolo puede usar estos caracteres '⸴ ⹁ ､ ⸒'"
         )
     )
 
@@ -261,8 +261,17 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             total = len(self.answers)
 
             for k,v in list(self.student_answers.items()):
-                if v == self.answers[k]:
-                    buenas += 1
+                #Revisar multiples opciones e respuestas
+                if v.find("[_[i]_]"): #Verificar inputs
+                    optionsinput = v.replace("[_[i]_]","")
+                    optionsinputs = optionsinput.split("_")
+                    for option in optionsinputs:
+                        if option == self.answers[k]:
+                            buenas += 1
+                elif v.find("[_[s]_]"): #Verificar selects
+                    optionselect = v.replace("[_[s]_]","")
+                    if optionselect == self.answers[k]:
+                        buenas += 1
             
             malas = (total-buenas)
 

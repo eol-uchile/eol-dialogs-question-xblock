@@ -7,7 +7,7 @@ function findquestions(d, replace = true) {
     $.each($(d).find(".inputdialogo"), function(j,v){
         var answer = $(v).text();
         var input = $('<input/>').attr({ type: 'text', class: 'inputdialogo', 'question-id':c});
-        answers[c] = answer;
+        answers[c] = '[_[i]_]' + answer;
         c++;
         if(replace)
             $(v).replaceWith(input);
@@ -27,7 +27,7 @@ function findquestions(d, replace = true) {
                 //saco los parentesis
                 opciones[i] = opciones[i].slice(1, -1);
                 select.attr("question-id",c);
-                answers[c] = opciones[i];
+                answers[c] = '[_[s]_]' + opciones[i];
                 c++;
             }
             select.append($('<option/>').attr({ value: opciones[i] }).html(opciones[i]));
