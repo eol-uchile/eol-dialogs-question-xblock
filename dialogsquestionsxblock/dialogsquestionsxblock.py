@@ -265,16 +265,10 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
                 #Revisar multiples opciones e respuestas
                 anstocheck = self.answers[k]
 
-                print("revisar")
-                print(v)
-                print(anstocheck)
-
                 if anstocheck.find("[_[i]_]") != -1: #Verificar si es input
                     print("es input")
                     optionsinput = str(anstocheck).replace("[_[i]_]","")
                     optionsinputs = optionsinput.split("_")#Separo las posibles soluciones
-                    print(optionsinput)
-                    print("opciones")
                     for option in optionsinputs:
                         print(option)
                         if option.strip() == v.strip():
@@ -284,7 +278,6 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
                 elif anstocheck.find("[_[s]_]") != -1: #Verificar si es select
                     print("es select")
                     optionselect = str(anstocheck).replace("[_[s]_]","")
-                    print(optionselect)
                     if optionselect.strip() == v.strip():
                         buenas += 1
 
