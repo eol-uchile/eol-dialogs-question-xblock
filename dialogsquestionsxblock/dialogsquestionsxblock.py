@@ -265,6 +265,10 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
                 #Revisar multiples opciones e respuestas
                 anstocheck = self.answers[k]
 
+                print("revisar")
+                print(v)
+                print(anstocheck)
+
                 if anstocheck.find("[_[i]_]"): #Verificar si es input
                     print("es input")
                     optionsinput = str(anstocheck).replace("[_[i]_]","")
