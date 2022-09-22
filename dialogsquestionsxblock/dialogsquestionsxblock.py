@@ -266,15 +266,19 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
                 anstocheck = self.answers[k]
 
                 if anstocheck.find("[_[i]_]"): #Verificar si es input
+                    print("es input")
                     optionsinput = anstocheck.replace("[_[i]_]","")
                     optionsinputs = optionsinput.split("_")#Separo las posibles soluciones
                     for option in optionsinputs:
+                        print(option)
                         if option.strip() == v.strip():
                             buenas += 1
                             break
 
                 elif anstocheck.find("[_[s]_]"): #Verificar si es select
+                    print("es select")
                     optionselect = anstocheck.replace("[_[s]_]","")
+                    print(optionselect)
                     if optionselect.strip() == v.strip():
                         buenas += 1
 
