@@ -102,7 +102,7 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
 
                 ans_inputs.forEach(
                     function(ans){
-                        if(ans == $(v).val) {
+                        if( ans.trim() == $(v).val().trim() ) {
                             $img = $ticket;
                         }
                         input_resp += ans + " o "
@@ -110,7 +110,7 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
                 );
 
                 input_resp += "+_punto*"
-                input_resp.replace("o +_punto*",".")
+                input_resp.replace("o +_punto*"," ")
 
                 $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+ input_resp +'&nbsp; </span>');
             })
