@@ -1,3 +1,4 @@
+from ipaddress import v6_int_to_packed
 import pkg_resources
 
 from django.template import Context, Template
@@ -13,6 +14,9 @@ utc=pytz.UTC
 
 # Make '_' a no-op so we can scrape strings
 _ = lambda text: text
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
@@ -43,6 +47,13 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope=Scope.settings,
     )
 
+    border_color = String(
+        display_name=_("Color del borde"),
+        help=_("Color del borde del contenedor del dialogo"),
+        default="#F8E37B",
+        scope=Scope.settings,
+    )
+
     text_color = String(
         display_name=_("Color del texto"),
         help=_("Color del texto del dialogo"),
@@ -58,6 +69,13 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope = Scope.settings
     )
 
+    character_name = String(
+        display_name=_("Nombre del personaje (RedFid)"),
+        help=_("Solo disponible en RedFid"),
+        default="Firulais",
+        scope=Scope.settings,
+    )
+
     text = String(
         display_name="Contenido del dialogo", 
         multiline_editor='html', 
@@ -65,8 +83,8 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         default="<p>Contenido del dialogo.</p>", 
         scope=Scope.settings,
         help=_("Indica el contenido del dialogo, si se quieren incluir entradas de texto," 
-            "usar el formato &lt;span class='inputdialogo'&gt;respuesta correcta&lt;/span&gt; y si se quieren "
-            "incluir dropdowns &lt;span class='dropdowndialogo'&gt;opcion incorrecta,(opcioncorrecta),opcion incorrecta&lt;/span&gt;"
+            "usar el formato &lt;span class='inputdialogo'&gt;respuesta correcta_otra respuesta correcta&lt;/span&gt; y si se quieren "
+            "incluir dropdowns &lt;span class='dropdowndialogo'&gt;opcion incorrecta,(opcioncorrecta),opcion incorrecta&lt;/span&gt; <br/> Si necesitas utilizar la coma como símbolo puede usar estos caracteres '⸴ ⹁ ､ ⸒'"
         )
     )
 
@@ -74,7 +92,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         display_name = _("Estilo"),
         help = _("Cambiar estilo de la pregunta"),
         default = "SumaySigue",
-        values = ["SumaySigue", "Media"],
+        values = ["SumaySigue", "Media","RedFid"],
         scope = Scope.settings
     )
 
@@ -134,7 +152,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     icon_class = "problem"
 
-    editable_fields = ('image_url', 'background_color', 'text_color', 'side', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
+    editable_fields = ('display_name', 'image_url', 'background_color', 'border_color', 'text_color', 'side', 'character_name', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
@@ -236,17 +254,30 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
     def savestudentanswers(self, data, suffix=''):  # pylint: disable=unused-argument
         #Reviso si no estoy haciendo trampa y contestando mas veces en paralelo
         errores = False
-        if ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
-            self.student_answers = data['student_answers']
+        if self.max_attempts == None or ((self.attempts + 1) <= self.max_attempts) or self.max_attempts <= 0:
+            self.student_answers = data['student_answers']#Respuestas de estudiantes
             #check correctness
             buenas = 0.0
             malas = 0.0
             total = len(self.answers)
 
-            for k,v in self.student_answers.items():
-                if v == self.answers[k]:
-                    buenas += 1
-            
+            for k,v in list(self.student_answers.items()):
+                #Revisa multiples opciones e respuestas
+                anstocheck = self.answers[k]
+
+                if anstocheck.find("[_[i]_]") != -1: #Verificar si es input
+                    optionsinput = str(anstocheck).replace("[_[i]_]","")
+                    optionsinputs = optionsinput.split("_")#Separa las posibles soluciones
+                    for option in optionsinputs:
+                        if option.strip() == v.strip():
+                            buenas += 1
+                            break
+
+                elif anstocheck.find("[_[s]_]") != -1: #Verifica si es select
+                    optionselect = str(anstocheck).replace("[_[s]_]","")
+                    if optionselect.strip() == v.strip():
+                        buenas += 1
+
             malas = (total-buenas)
 
             #update score and classes
