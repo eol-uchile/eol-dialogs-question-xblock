@@ -96,16 +96,30 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
         $obj.find('.showing_answers').remove();
             $.each($obj.find(".inputdialogo"), function(j,v){
                 $img = $cruz;
-                if(result.answers[$(v).attr('question-id')] == $(v).val())
-                    $img = $ticket;
-                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+result.answers[$(v).attr('question-id')]+'&nbsp; </span>');
+                
+                ans_inputs = ((result.answers[$(v).attr('question-id')]).replace("[_[i]_]","")).split("_")
+                input_resp = ""
+
+                ans_inputs.forEach(
+                    function(ans){
+                        if( ans.trim() == $(v).val().trim() ) {
+                            $img = $ticket;
+                        }
+                        input_resp += ans + " o "
+                    }
+                );
+
+                input_resp += "+_punto*"
+                input_resp = input_resp.replace("o +_punto*"," ")
+
+                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+ input_resp +'&nbsp; </span>');
             })
             $.each($obj.find(".dropdowndialogo"), function(j,v){
                 $img = $cruz;
                 console.log(result.answers[$(v).attr('question-id')]+" "+$(v).val());
-                if(result.answers[$(v).attr('question-id')] == $(v).val())
+                if ( (result.answers[$(v).attr('question-id')]).replace("[_[s]_]","") == $(v).val())
                     $img = $ticket;
-                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+result.answers[$(v).attr('question-id')]+'&nbsp; </span>');
+                $(v).after('<span class="showing_answers"> &nbsp;'+$img+'&nbsp;<strong>Respuesta:</strong> '+ result.answers[$(v).attr('question-id')].replace("[_[s]_]","") +'&nbsp; </span>');
             })
     }
 
