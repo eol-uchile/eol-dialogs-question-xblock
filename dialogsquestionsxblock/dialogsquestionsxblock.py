@@ -278,6 +278,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             for k,v in list(self.student_answers.items()):
                 #Revisa multiples opciones e respuestas
                 anstocheck = self.answers[k]
+                anstocheck = anstocheck.replace("<span></span>","")
 
                 if anstocheck.find("[_[i]_]") != -1: #Verificar si es input
                     optionsinput = str(anstocheck).replace("[_[i]_]","")
