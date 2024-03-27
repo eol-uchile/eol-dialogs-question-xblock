@@ -202,6 +202,8 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
             field_info = self._make_field_info(field_name, field)
             if field_info is not None:
                 context["fields"].append(field_info)
+                if field_name == 'text': 
+                    field_info["value"] = field_info["value"].replace("<span></span>","")
         template = self.render_template('static/html/studio_edit.html', context)
         fragment = Fragment(template)
         fragment.add_javascript(self.resource_string("static/js/src/utils.js"))
