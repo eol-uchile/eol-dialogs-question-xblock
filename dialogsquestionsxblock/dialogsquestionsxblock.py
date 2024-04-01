@@ -207,6 +207,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         template = self.render_template('static/html/studio_edit.html', context)
         fragment = Fragment(template)
         fragment.add_javascript(self.resource_string("static/js/src/utils.js"))
+        fragment.add_javascript(self.resource_string("static/js/src/mathjax.js"))
         fragment.add_javascript(self.resource_string("static/js/src/studio_edit.js"))
         fragment.initialize_js('StudioEditableXBlockMixin')
         return fragment
