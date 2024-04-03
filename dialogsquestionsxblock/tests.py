@@ -112,45 +112,47 @@ class DialogsQuestionsXblockTestCase(unittest.TestCase):
         request.method = 'POST'
 
         data = json.dumps({'values':{'text': 'Agrego una pregunta con input <span class="inputdialogo">asdf</span> y una con dropdown <span class="dropdowndialogo">o1,o2,(o3),o4</span>',
-                                    'answers': {1: "asdf", 2: "o3"},
+                                    'answers': {1: "[_[i]_]asdf", 2: "[_[s]_]o3"},
                                     'max_attempts': 5
                                     },
                             'defaults':{}
                             })
         request.body = data.encode('utf-8')
         response = self.xblock.submit_studio_edits(request)
-        self.assertEqual(self.xblock.answers, {'1': "asdf", '2': "o3"})
+        self.assertEqual(self.xblock.answers, {"1": "[_[i]_]asdf", "2": "[_[s]_]o3"})
 
         #pruebo respuestas buenas y malas con el problema con nuevas respuestas
         request = TestRequest()
         request.method = 'POST'
 
-        data = json.dumps({'student_answers': {'1': "asdf", '2': "o3"}})
-        request.body = data.encode('utf-8')
-        response = self.xblock.savestudentanswers(request)
-        self.assertEqual(response.json_body['indicator_class'], 'correct')
-        self.assertEqual(response.json_body['attempts'], 1)
-
         data = json.dumps({'student_answers': {'1': "fdsa", '2': "o3"}})
         request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
-        self.assertEqual(response.json_body['attempts'], 2)
+        self.assertEqual(response.json_body['attempts'], 1)
 
         data = json.dumps({'student_answers': {'1': "asdf"}})
         request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
-        self.assertEqual(response.json_body['attempts'], 3)
+        self.assertEqual(response.json_body['attempts'], 2)
 
         data = json.dumps({'student_answers': {'1': "asdf", '2': "o2"}})
         request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
-        self.assertEqual(response.json_body['attempts'], 4)
+        self.assertEqual(response.json_body['attempts'], 3)
 
         data = json.dumps({'student_answers': {'1': "qwerty", '2': "o1"}})
         request.body = data.encode('utf-8')
         response = self.xblock.savestudentanswers(request)
         self.assertEqual(response.json_body['indicator_class'], 'incorrect')
+        self.assertEqual(response.json_body['attempts'], 4)
+
+        print("REVISAR CORRECTA")
+
+        data = json.dumps({'student_answers': {'1': "asdf", '2': "o3"}})
+        request.body = data.encode('utf-8')
+        response = self.xblock.savestudentanswers(request)
+        self.assertEqual(response.json_body['indicator_class'], 'correct')
         self.assertEqual(response.json_body['attempts'], 5)

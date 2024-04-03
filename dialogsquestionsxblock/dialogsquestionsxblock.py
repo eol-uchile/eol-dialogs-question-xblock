@@ -179,6 +179,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         frag = Fragment(template)
         frag.add_css(self.resource_string("static/css/dialogsq.css"))
         frag.add_javascript(self.resource_string("static/js/src/utils.js"))
+        frag.add_javascript(self.resource_string("static/js/src/mathjax.js"))
         frag.add_javascript(self.resource_string("static/js/src/dialogsq.js"))
         settings = {
             'image_path': self.runtime.local_resource_url(self, 'public/images/')
