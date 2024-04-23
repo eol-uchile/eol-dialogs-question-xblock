@@ -97,7 +97,8 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
             $.each($obj.find(".inputdialogo"), function(j,v){
                 $img = $cruz;
                 
-                ans_inputs = ((result.answers[$(v).attr('question-id')]).replace("[_[i]_]","")).split("_")
+                let prei_inputs = (result.answers[$(v).attr('question-id')]).replace("<span></span>","")
+                ans_inputs = (prei_inputs.replace("[_[i]_]","")).split("_")
                 input_resp = ""
 
                 ans_inputs.forEach(
