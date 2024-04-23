@@ -179,7 +179,6 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         frag = Fragment(template)
         frag.add_css(self.resource_string("static/css/dialogsq.css"))
         frag.add_javascript(self.resource_string("static/js/src/utils.js"))
-        frag.add_javascript(self.resource_string("static/js/src/mathjax.js"))
         frag.add_javascript(self.resource_string("static/js/src/dialogsq.js"))
         settings = {
             'image_path': self.runtime.local_resource_url(self, 'public/images/')
@@ -328,10 +327,9 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     @XBlock.json_handler
     def getanswers(self, data, suffix=''):
-        if (self.attempts >= self.max_attempts and self.show_answer == 'Finalizado') or self.show_answer == 'Mostrar':
+        if ( (self.max_attempts is None or self.attempts >= self.max_attempts) and self.show_answer == 'Finalizado') or self.show_answer == 'Mostrar':
             return {'answers': self.answers}
-        else:
-            return {}
+        return {}
 
     def get_indicator_class(self):
         indicator_class = 'unanswered'

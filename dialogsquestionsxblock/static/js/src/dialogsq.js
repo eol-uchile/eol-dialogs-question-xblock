@@ -132,6 +132,8 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
         clickSubmit();
         clickShowAnswers();
         clickEnableSubmit();
+
+        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);// Renderiza Latex en el xblock
     });
 
     function widthInput(){
