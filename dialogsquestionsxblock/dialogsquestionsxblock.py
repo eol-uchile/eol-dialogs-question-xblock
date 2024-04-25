@@ -110,6 +110,15 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         scope = Scope.settings
     )
 
+    globo = String(
+        display_name = _("globo"),
+        help = _("Cambiar tipo de globo de dialogo (solo SumaySigue)"),
+        default = "dialogo",
+        values = ["dialogo", "pensamiento"],
+        scope = Scope.settings
+    )
+
+
     answers = Dict(
         help=_(
             'Respuestas de las preguntas'
@@ -166,7 +175,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
 
     icon_class = "problem"
 
-    editable_fields = ('display_name', 'image_url', 'image_size', 'flip_image', 'background_color', 'border_color', 'text_color', 'side', 'character_name', 'text', 'theme', 'max_attempts', 'weight', 'show_answer', 'answers')
+    editable_fields = ('display_name', 'image_url', 'image_size', 'flip_image', 'background_color', 'border_color', 'text_color', 'side', 'character_name', 'text', 'theme', 'globo', 'max_attempts', 'weight', 'show_answer', 'answers')
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""

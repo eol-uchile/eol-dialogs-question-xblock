@@ -10,7 +10,11 @@
             {{ xblock.border_color }}
         {% else %}
             {{ xblock.background_color }}
-        {% endif %};"></div>
+        {% endif %};
+        {% if xblock.globo == "pensamiento" %}
+                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAcCAMAAADGFxadAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAEVQTFRF////////////////AAAA////////////////////////////////////////////////////////////////////////LjwVrQAAABd0Uk5T//KGJACF8acLoFUhAhtMmPueHBebbB1PmvB9AAAAsUlEQVR4nOWT2xKDIAxEBYLKpRdp9f8/tTgtEUKH4Ezfuo87JxA2YRj+VEIqUHrsxacZds1THz6+8VggungNSTK3jXUeLtfbnfIKeXWYS0jm40l4OITempmwsucXOC2Q6OvUDBAtOS8wnzSBjfKhuIDmbygOYIqCUcf5Skzf1ryloeZyNe9avK95/0v+bD9n38vmSRUovjVxZh++qLlvbAGPx5Zw5wLXzEf7f/TOZsm8AAH9CVUyoeEuAAAAAElFTkSuQmCC');
+            {% endif %};
+        "></div>
         <div class="dialogo" style="background-color: {{ xblock.background_color }}; border-color:{{ xblock.border_color }}; color: {{ xblock.text_color }};">
             {{xblock.text | safe }}
         </div>
