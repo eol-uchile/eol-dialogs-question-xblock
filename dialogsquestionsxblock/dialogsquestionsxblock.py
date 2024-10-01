@@ -190,6 +190,7 @@ class DialogsQuestionsXBlock(StudioEditableXBlockMixin, XBlock):
         frag.add_javascript(self.resource_string("static/js/src/utils.js"))
         frag.add_javascript(self.resource_string("static/js/src/dialogsq.js"))
         settings = {
+            'location'  : str(self.location).split('@')[-1],
             'image_path': self.runtime.local_resource_url(self, 'public/images/')
         }
         frag.initialize_js('DialogsQuestionsXBlock', json_args=settings)
