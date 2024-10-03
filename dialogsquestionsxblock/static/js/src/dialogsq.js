@@ -134,8 +134,24 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
         clickShowAnswers();
         clickEnableSubmit();
 
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);// Renderiza Latex en el xblock
+        var dialogquestid = "dialog_question_" + settings.location;
+		renderMathForSpecificElements(dialogquestid);
     });
+
+    function renderMathForSpecificElements(id) {
+        //console.log("Render Mathjax in " + id);
+        if (typeof MathJax !== "undefined") {
+            var $dialog = $('#' + id);
+            if ($dialog.length) {
+                $dialog.find('.dialogo').each(function (index, diagelem) {
+                    //console.log("encontrado")
+                    MathJax.Hub.Queue(["Typeset", MathJax.Hub, diagelem]);
+                });
+            }
+        } else {
+            console.warn("MathJax no está cargado.");
+        }
+    }
 
     function widthInput(){
         $element.find('input').each(function(){
