@@ -16,8 +16,40 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
     var statusDiv = $element.find('.status');
     var handlerUrlSaveStudentAnswers = runtime.handlerUrl(element, 'savestudentanswers');
     var handlerUrlShowAnswers = runtime.handlerUrl(element, 'getanswers');
+    
+    // Add variables for state caching
+    var $xblocksContainer = $('#seq_content');
+    var xblockId = settings.location;
+    var stateId = xblockId + '_dialogsq_state';
+    var cachedAnswersId = xblockId + '_dialogsq_answers';
+    var cachedIndicatorClassId = xblockId + '_dialogsq_indicator_class';
+    var cachedAttemptsId = xblockId + '_dialogsq_attempts';
+    var cachedMaxAttemptsId = xblockId + '_dialogsq_max_attempts';
+    var cachedScoreId = xblockId + '_dialogsq_score';
+    var cachedShowCorrectnessId = xblockId + '_dialogsq_show_correctness';
+    var cachedShowAnswerId = xblockId + '_dialogsq_show_answer';
 
     function updateText(result) {
+        console.log('DialogsQuestions updateText:', result);
+        
+        // Cache state for page navigation
+        $xblocksContainer.data(cachedIndicatorClassId, result.indicator_class);
+        $xblocksContainer.data(cachedAttemptsId, result.attempts);
+        $xblocksContainer.data(cachedMaxAttemptsId, result.max_attempts);
+        $xblocksContainer.data(cachedScoreId, result.score);
+        $xblocksContainer.data(cachedShowCorrectnessId, result.show_correctness);
+        $xblocksContainer.data(cachedShowAnswerId, result.show_answer);
+        
+        // Save student answers from inputs and dropdowns
+        var student_answers = {};
+        $element.find('.inputdialogo').each(function() {
+            student_answers[$(this).attr('question-id')] = $(this).val();
+        });
+        $element.find('.dropdowndialogo').each(function() {
+            student_answers[$(this).attr('question-id')] = $(this).val();
+        });
+        $xblocksContainer.data(cachedAnswersId, student_answers);
+        
         //actualizo el texto de correcto o incorrecto
         if(result.show_correctness != 'never'){
             if(result.score >= 1){
@@ -125,9 +157,87 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
     }
 
     $(function ($) {
+        console.log('DialogsQuestions initializing for XBlock:', xblockId);
 
         findquestions($element.find('.dialogo'));
         writeStudentAnswers();
+        
+        // Restore cached state if available
+        if ($xblocksContainer.data(cachedIndicatorClassId) !== undefined) {
+            console.log('Found cached state for DialogsQuestions XBlock:', xblockId);
+            console.log('Cached indicator class:', $xblocksContainer.data(cachedIndicatorClassId));
+            console.log('Cached attempts:', $xblocksContainer.data(cachedAttemptsId));
+            console.log('Cached max attempts:', $xblocksContainer.data(cachedMaxAttemptsId));
+            console.log('Cached score:', $xblocksContainer.data(cachedScoreId));
+            
+            // Restore visual state
+            var indicator_class = $xblocksContainer.data(cachedIndicatorClassId);
+            var attempts = $xblocksContainer.data(cachedAttemptsId);
+            var max_attempts = $xblocksContainer.data(cachedMaxAttemptsId);
+            var score = $xblocksContainer.data(cachedScoreId);
+            var show_correctness = $xblocksContainer.data(cachedShowCorrectnessId);
+            var show_answer = $xblocksContainer.data(cachedShowAnswerId);
+            var student_answers = $xblocksContainer.data(cachedAnswersId);
+            
+            // Apply indicator class
+            statusDiv.removeClass('correct');
+            statusDiv.removeClass('incorrect');
+            statusDiv.removeClass('unanswered');
+            statusDiv.addClass(indicator_class);
+            
+            // Restore student answers to inputs and dropdowns
+            if (student_answers) {
+                console.log('Restoring student answers:', student_answers);
+                for (var question_id in student_answers) {
+                    $element.find('[question-id="'+question_id+'"]').val(student_answers[question_id]);
+                }
+            }
+            
+            // Set submission feedback
+            if (max_attempts > 0) {
+                subFeedback.text('Has realizado '+attempts+' de '+max_attempts+' intentos');
+                if (attempts >= max_attempts) {
+                    buttonSubmit.attr("disabled", true);
+                    
+                    // Add show answers button if needed
+                    if (show_answer == 'Finalizado' && !$element.find('.button_show_answers').length && show_correctness != 'never') {
+                        var mostrar_resp = '<button class="button_show_answers"><span class="icon fa fa-info-circle" aria-hidden="true"></span><br><span>Mostrar<br>Respuesta</span></button>';
+                        $element.find('.responder').append(mostrar_resp);
+                        clickShowAnswers();
+                    }
+                }
+            }
+            
+            // Set notification message based on score
+            if (show_correctness != 'never') {
+                if (score >= 1) {
+                    $element.find('.notificacion').html('');
+                    $element.find('.notificacion').removeClass('incorrecto');
+                    $element.find('.notificacion').removeClass('dontshowcorrectness');
+                    $element.find('.notificacion').addClass('correcto');
+                    $element.find('.notificacion.correcto').html('<img src="'+settings.image_path+'correct-icon.png"/> ¡Respuesta Correcta!');
+                } else if (attempts > 0) {
+                    $element.find('.notificacion').html('');
+                    $element.find('.notificacion').removeClass('correcto');
+                    $element.find('.notificacion').removeClass('dontshowcorrectness');
+                    $element.find('.notificacion').addClass('incorrecto');
+                    if (score > 0) {
+                        $element.find('.notificacion.incorrecto').html('<img src="'+settings.image_path+'partial-icon.png"/> Respuesta parcialmente correcta');
+                    } else {
+                        $element.find('.notificacion.incorrecto').html('<img src="'+settings.image_path+'incorrect-icon.png"/> Respuesta Incorrecta');
+                    }
+                }
+            } else if (attempts > 0) {
+                $element.find('.notificacion').html('');
+                $element.find('.notificacion').removeClass('correcto');
+                $element.find('.notificacion').removeClass('incorrecto');
+                $element.find('.notificacion').addClass('dontshowcorrectness');
+                $element.find('.notificacion.dontshowcorrectness').html('<span class="icon fa fa-info-circle" aria-hidden="true"></span>Respuesta enviada.');
+            }
+        } else {
+            console.log('No cached state found for DialogsQuestions XBlock:', xblockId);
+        }
+        
         widthInput();
         actionkeyInput();
         clickSubmit();
@@ -178,6 +288,9 @@ function DialogsQuestionsXBlock(runtime, element, settings) {
             $element.find('.dropdowndialogo').each(function() {
                 student_answers[$(this).attr('question-id')] = $(this).val();
             });
+            
+            console.log('Submitting answers for DialogsQuestions XBlock:', xblockId, student_answers);
+            
             $.ajax({
                 type: "POST",
                 url: handlerUrlSaveStudentAnswers,
