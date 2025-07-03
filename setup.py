@@ -25,7 +25,7 @@ def package_data(pkg, roots):
 
 setup(
     name='dialogsquestionsxblock-xblock',
-    version='0.1',
+    version='1.0.0',
     description='dialogsquestionsxblock XBlock', 
     license='AGPL v3',
     packages=[
