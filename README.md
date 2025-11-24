@@ -1,7 +1,7 @@
 
 # EOL Dialogs with Questions XBlock
 
-![https://github.com/eol-uchile/eol-dialogs-question-xblock/actions](https://github.com/eol-uchile/eol-dialogs-question-xblock/workflows/Python%20application/badge.svg)
+![https://github.com/eol-uchile/eol-dialogs-question-xblock/actions](https://github.com/eol-uchile/eol-dialogs-question-xblock/workflows/Python%20application/badge.svg) ![Coverage Status](/coverage-badge.svg)
 
 XBlock to display "Suma y Sigue" Dialogs with Questions in the [CMM Edu Formación](https://cmmeduformacion.uchile.cl) Open edX LMS. Editable within Open edx Studio.
 
