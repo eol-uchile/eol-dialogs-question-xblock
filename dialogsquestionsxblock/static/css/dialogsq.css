@@ -66,12 +66,12 @@
 }
 .dialogsq_block .Izquierda .cola{
     left: 133px;
-    background-image: url(https://static.cmm.uchile.cl/global2/cola_izq.png);
+    clip-path: polygon(0 1px, 100% 1px, 100% 25px);
 }
 
 .dialogsq_block .Derecha .cola{
     right: 133px;
-    background-image: url(https://static.cmm.uchile.cl/global2/cola_der.png);
+    clip-path: polygon(0 1px, 100% 1px, 0 25px);
 }
 
 .dialogsq_block .Izquierda .cola,
@@ -82,6 +82,33 @@
     width: 47px;
     height: 28px;
     z-index: 4;
+}
+
+/* Globo "pensamiento" (SumaySigue): dos burbujas dibujadas con mascara */
+
+.dialogsq_block.SumaySigue .cola.pensamiento{
+    height: 29px;
+    clip-path: none;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+.dialogsq_block.SumaySigue .Izquierda .cola.pensamiento{
+    -webkit-mask-image:
+        radial-gradient(circle at 9.5px 5.5px, #000 4.5px, transparent 5px),
+        radial-gradient(circle at 30.5px 16.5px, #000 11.5px, transparent 12px);
+    mask-image:
+        radial-gradient(circle at 9.5px 5.5px, #000 4.5px, transparent 5px),
+        radial-gradient(circle at 30.5px 16.5px, #000 11.5px, transparent 12px);
+}
+
+.dialogsq_block.SumaySigue .Derecha .cola.pensamiento{
+    -webkit-mask-image:
+        radial-gradient(circle at 37.5px 5.5px, #000 4.5px, transparent 5px),
+        radial-gradient(circle at 16.5px 16.5px, #000 11.5px, transparent 12px);
+    mask-image:
+        radial-gradient(circle at 37.5px 5.5px, #000 4.5px, transparent 5px),
+        radial-gradient(circle at 16.5px 16.5px, #000 11.5px, transparent 12px);
 }
 
 .dialogsq_block .Izquierda .responder{
@@ -242,7 +269,7 @@
 /* CSS for RedFid theme */
 
 .dialogsq_block.RedFid .Izquierda .cola{
-    background-image: url(https://static.sumaysigue.uchile.cl/cmmeduformacion/produccion/assets/img/cola_izq_border.png);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 39px 100%);
     top: 45px;
     width: 44px;
     height: 32px;
@@ -250,11 +277,74 @@
 }
 
 .dialogsq_block.RedFid .Derecha .cola{
-    background-image: url(https://static.sumaysigue.uchile.cl/cmmeduformacion/produccion/assets/img/cola_der_border.png);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 39px) 100%, 0 100%);
     top: 45px;
     width: 44px;
     height: 32px;
     left: 616px;
+}
+
+/* Relleno blanco de la cola: tapa el borde del dialogo donde se une la cola */
+.dialogsq_block.RedFid .cola::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FFF;
+}
+
+.dialogsq_block.RedFid .Izquierda .cola::after{
+    clip-path: polygon(13px 4px, 100% 4px, 100% 29px);
+}
+
+.dialogsq_block.RedFid .Derecha .cola::after{
+    clip-path: polygon(0 4px, calc(100% - 13px) 4px, 0 29px);
+}
+
+/* Globo "pensamiento" (RedFid): dos burbujas con borde y relleno blanco */
+.dialogsq_block.RedFid .cola.pensamiento,
+.dialogsq_block.RedFid .cola.pensamiento::after{
+    clip-path: none;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+.dialogsq_block.RedFid .Izquierda .cola.pensamiento{
+    -webkit-mask-image:
+        radial-gradient(circle at 8px 8px, #000 6px, transparent 6.5px),
+        radial-gradient(circle at 28px 18px, #000 11px, transparent 11.5px);
+    mask-image:
+        radial-gradient(circle at 8px 8px, #000 6px, transparent 6.5px),
+        radial-gradient(circle at 28px 18px, #000 11px, transparent 11.5px);
+}
+
+.dialogsq_block.RedFid .Izquierda .cola.pensamiento::after{
+    -webkit-mask-image:
+        radial-gradient(circle at 8px 8px, #000 3px, transparent 3.5px),
+        radial-gradient(circle at 28px 18px, #000 7px, transparent 7.5px);
+    mask-image:
+        radial-gradient(circle at 8px 8px, #000 3px, transparent 3.5px),
+        radial-gradient(circle at 28px 18px, #000 7px, transparent 7.5px);
+}
+
+.dialogsq_block.RedFid .Derecha .cola.pensamiento{
+    -webkit-mask-image:
+        radial-gradient(circle at 36px 8px, #000 6px, transparent 6.5px),
+        radial-gradient(circle at 16px 18px, #000 11px, transparent 11.5px);
+    mask-image:
+        radial-gradient(circle at 36px 8px, #000 6px, transparent 6.5px),
+        radial-gradient(circle at 16px 18px, #000 11px, transparent 11.5px);
+}
+
+.dialogsq_block.RedFid .Derecha .cola.pensamiento::after{
+    -webkit-mask-image:
+        radial-gradient(circle at 36px 8px, #000 3px, transparent 3.5px),
+        radial-gradient(circle at 16px 18px, #000 7px, transparent 7.5px);
+    mask-image:
+        radial-gradient(circle at 36px 8px, #000 3px, transparent 3.5px),
+        radial-gradient(circle at 16px 18px, #000 7px, transparent 7.5px);
 }
 
 .dialogsq_block.RedFid .personaje{
